@@ -22,11 +22,29 @@ class ClassificadorPerfis:
         pass # ao terminar de fazer o método, apague esse "pass"
     
   def preparar_dados(self, dados: pd.DataFrame) -> None:
-        # Tarefa: Separar X e y, fazer o train_test_split e aplicar (PDF da aula 3, pág 14 contém um exemplo)
-        # o StandardScaler (fit_transform no treino, transform no teste)
-        # Salvar os resultados dentro da classe (ex: self.X_treino)
-        # Regra contra vazamento de dados (Roteiro da Prova, item 4.2.7)
-        pass # ao terminar de fazer o método, apague esse "pass"       
+
+      colunas_atributos = [
+            'idade', 
+            'limite_credito', 
+            'gasto_mensal', 
+            'transacoes_mes', 
+            'parcelamentos_ativos'
+      ]
+
+      X = dados[colunas_atributos]
+      y = dados['rotulo_grupo']
+
+      X_treino, X_teste, self.y_treino, self.y_teste = train_test_split(
+            X, 
+            y, 
+            test_size=0.2, # 20% teste, 80% treino
+            random_state=42, # Mantém os resultados reprodutíveis
+            stratify=y # Mantém a proporção de classes entre treino e teste
+      )
+
+      self.X_treino = self.scaler.fit_transform(X_treino)
+      self.X_teste = self.scaler.transform(X_teste)
+ 
     
   def executar_experimento(self, limite_iteracoes: int) -> None:
         # Tarefa: Configurar o MLPClassifier com o limite_iteracoes,
@@ -46,3 +64,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+#É o lufe n tem jeito
