@@ -66,13 +66,51 @@ class ClassificadorPerfis:
     
 
 
-  
-  def prever_novos_casos(self, dados_ineditos: pd.DataFrame) -> None:
-        # Tarefa: Usar o self.scaler.transform nos dados novos
-        # e imprimir as predições geradas pela rede
-        # Consulta: Exigência de 5 casos inéditos (Roteiro da Prova, Seção de Testes)
-        pass # ao terminar de fazer o método, apague esse "pass"
+  #Pindamoiangaba (matt)
 
+  def prever_novos_casos(self, dados_ineditos: pd.DataFrame) -> None:
+    colunas_atributos = [
+        "idade",
+        "limite_credito",
+        "gasto_mensal",
+        "transacoes_mes",
+        "parcelamentos_ativos",
+        "rotulo_esperado"]
+
+    # Seleciona somente as entradas usadas pela rede
+    X_novos = dados_ineditos[colunas_atributos]
+
+    # Usa o mesmo scaler que foi ajustado nos dados de treino
+    X_novos_padronizados = self.scaler.transform(X_novos)
+
+    # Faz a previsão com o modelo já treinado
+    predicoes = self.modelo.predict(X_novos_padronizados)
+
+    # Cria uma cópia para não alterar o DataFrame original
+    resultados = dados_ineditos.copy()
+    resultados["rotulo_previsto"] = predicoes
+
+    # Compara previsão com o resultado esperado
+    resultados["resultado"] = resultados.apply(
+        lambda linha: "ACERTO"
+        if linha["rotulo_esperado"] == linha["rotulo_previsto"]
+        else "ERRO",
+        axis=1
+        )
+
+    print("\n--- Previsão de Casos Inéditos ---")
+
+    for numero, (_, linha) in enumerate(resultados.iterrows(), start=1):
+        print(
+            f"Cliente {numero} -> "
+            f"Esperado: {linha['rotulo_esperado']} | "
+            f"Previsto: {linha['rotulo_previsto']} | "
+            f"{linha['resultado']}")
+
+    caminho_saida = PASTA_RESULTADOS / "casos_de_teste.csv"
+    resultados.to_csv(caminho_saida, index=False)
+
+    print(f"\nArquivo salvo em: {caminho_saida}")
 
 def main() -> None:
   pass
@@ -83,3 +121,4 @@ if __name__ == "__main__":
 
 #É o lufe n tem jeito
 # BINGO!
+# O cerebro lisinho parece um peito de frango 
