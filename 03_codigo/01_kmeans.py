@@ -15,7 +15,7 @@ from sklearn.preprocessing import StandardScaler
 # ============================================================
 
 # ---------------------- CONFIGURAÇÃO -------------------------
-ARQUIVO_DADOS = "02_cartao_credito.csv"
+ARQUIVO_DADOS = "01_dados_recebidos/02_cartao_credito.csv"
 COLUNAS_ATRIBUTOS = ['idade', 'limite_credito', 'gasto_mensal', 
 'transacoes_mes', 'parcelamentos_ativos']
 
