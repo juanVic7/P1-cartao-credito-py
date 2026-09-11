@@ -4,6 +4,8 @@ from sklearn.model_selection import train_test_split  # Para separar dados de tr
 from sklearn.preprocessing import StandardScaler  # Para padronizar a escala das variáveis
 from sklearn.neural_network import MLPClassifier  # Para criar a rede neural supervisionada
 from sklearn.metrics import accuracy_score  # Para avaliar os acertos do modelo
+import matplotlib.pyplot as plt  # Para gerar os gráficos de erro
+
 
 PASTA_DADOS = Path("02_dados_tratados")
 PASTA_RESULTADOS = Path("04_resultados")
@@ -47,11 +49,24 @@ class ClassificadorPerfis:
  
     
   def executar_experimento(self, limite_iteracoes: int) -> None:
-        # Tarefa: Configurar o MLPClassifier com o limite_iteracoes,
-        # treinar a rede, calcular acurácias, plotar e salvar o gráfico
-        # Estrutura do MotorAnalise e uso de redes neurais (Capítulos 4 e 5).
-        pass # ao terminar de fazer o método, apague esse "pass"
     
+    self.modelo = MLPClassifier(hidden_layer_sizes=(5,), max_iter=limite_iteracoes, random_state=42, verbose=True)
+    self.modelo.fit(self.X_treino, self.y_treino)
+    
+    predicao = self.modelo.predict(self.X_teste)
+    acuracia = accuracy_score(self.y_teste, predicao)
+    print(f"Resultado com {limite_iteracoes} épocas: {acuracia * 100:.2f}% de acerto")
+
+    plt.clf() # Limpa a tela para não misturar com o gráfico anterior
+    plt.plot(self.modelo.loss_curve_) # Puxa o histórico e desenha a linha
+    plt.title(f"Queda do Erro - {limite_iteracoes} Épocas")
+    
+    caminho_imagem = PASTA_RESULTADOS / f"curva_perda_{limite_iteracoes}.png"
+    plt.savefig(caminho_imagem)
+    
+
+
+  
   def prever_novos_casos(self, dados_ineditos: pd.DataFrame) -> None:
         # Tarefa: Usar o self.scaler.transform nos dados novos
         # e imprimir as predições geradas pela rede
@@ -67,3 +82,4 @@ if __name__ == "__main__":
 
 
 #É o lufe n tem jeito
+# BINGO!
