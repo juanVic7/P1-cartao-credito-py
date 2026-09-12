@@ -74,8 +74,7 @@ class ClassificadorPerfis:
         "limite_credito",
         "gasto_mensal",
         "transacoes_mes",
-        "parcelamentos_ativos",
-        "rotulo_esperado"]
+        "parcelamentos_ativos"]
 
     # Seleciona somente as entradas usadas pela rede
     X_novos = dados_ineditos[colunas_atributos]
