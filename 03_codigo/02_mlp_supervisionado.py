@@ -1,14 +1,14 @@
-from pathlib import Path  # Para gerenciar caminhos de arquivos e pastas
-import pandas as pd  # Para carregar e manipular o CSV
-from sklearn.model_selection import train_test_split  # Para separar dados de treino e teste
-from sklearn.preprocessing import StandardScaler  # Para padronizar a escala das variáveis
-from sklearn.neural_network import MLPClassifier  # Para criar a rede neural supervisionada
-from sklearn.metrics import accuracy_score  # Para avaliar os acertos do modelo
-import matplotlib.pyplot as plt  # Para gerar os gráficos de erro
+from pathlib import Path 
+import pandas as pd  
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler 
+from sklearn.neural_network import MLPClassifier  
+from sklearn.metrics import accuracy_score 
+import matplotlib.pyplot as plt 
 
 
-PASTA_DADOS = Path("02_dados_tratados")
-PASTA_RESULTADOS = Path("04_resultados")
+PASTA_DADOS = Path("../02_dados_tratados")
+PASTA_RESULTADOS = Path("../04_resultados")
 
 class ClassificadorPerfis:
   def __init__(self) -> None:
@@ -36,9 +36,9 @@ class ClassificadorPerfis:
       X_treino, X_teste, self.y_treino, self.y_teste = train_test_split(
             X, 
             y, 
-            test_size=0.2, # 20% teste, 80% treino
-            random_state=42, # Mantém os resultados reprodutíveis
-            stratify=y # Mantém a proporção de classes entre treino e teste
+            test_size=0.2, 
+            random_state=42, 
+            stratify=y 
       )
 
       self.X_treino = self.scaler.fit_transform(X_treino)
@@ -54,8 +54,8 @@ class ClassificadorPerfis:
     acuracia = accuracy_score(self.y_teste, predicao)
     print(f"Resultado com {limite_iteracoes} épocas: {acuracia * 100:.2f}% de acerto")
 
-    plt.clf() # Limpa a tela para não misturar com o gráfico anterior
-    plt.plot(self.modelo.loss_curve_) # Puxa o histórico e desenha a linha
+    plt.clf() 
+    plt.plot(self.modelo.loss_curve_) 
     plt.title(f"Queda do Erro - {limite_iteracoes} Épocas")
     
     caminho_imagem = PASTA_RESULTADOS / f"curva_perda_{limite_iteracoes}.png"
@@ -63,7 +63,6 @@ class ClassificadorPerfis:
     
 
 
-  #Pindamoiangaba (matt)
 
   def prever_novos_casos(self, dados_ineditos: pd.DataFrame) -> None:
     colunas_atributos = [
@@ -73,20 +72,15 @@ class ClassificadorPerfis:
         "transacoes_mes",
         "parcelamentos_ativos"]
 
-    # Seleciona somente as entradas usadas pela rede
     X_novos = dados_ineditos[colunas_atributos]
 
-    # Usa o mesmo scaler que foi ajustado nos dados de treino
     X_novos_padronizados = self.scaler.transform(X_novos)
 
-    # Faz a previsão com o modelo já treinado
     predicoes = self.modelo.predict(X_novos_padronizados)
 
-    # Cria uma cópia para não alterar o DataFrame original
     resultados = dados_ineditos.copy()
     resultados["rotulo_previsto"] = predicoes
 
-    # Compara previsão com o resultado esperado
     resultados["resultado"] = resultados.apply(
         lambda linha: "ACERTO"
         if linha["rotulo_esperado"] == linha["rotulo_previsto"]
@@ -109,21 +103,20 @@ class ClassificadorPerfis:
     print(f"\nArquivo salvo em: {caminho_saida}")
 
 def main() -> None:
+  
   motor = ClassificadorPerfis()
+  
   caminho_treino = PASTA_DADOS / "dados_clusterizados_rotulados.csv"
   dados_treino = motor.carregar_dados(caminho_treino)
   motor.preparar_dados(dados_treino)
+  
   print ("--- INICIANDO TREINAMENTOS ---")
   for ciclos in [50, 500, 5000]:
      motor.executar_experimento(ciclos)
+    
   caminho_novos_clientes = PASTA_DADOS / "novos_clientes.csv"
   novos_clientes = motor.carregar_dados(caminho_novos_clientes)
   motor.prever_novos_casos(novos_clientes)
 
 if __name__ == "__main__":
     main()
-
-
-#É o lufe n tem jeito
-# BINGO!
-# O cerebro lisinho parece um peito de frango 

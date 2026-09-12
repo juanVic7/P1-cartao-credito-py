@@ -1,0 +1,8 @@
+idade,limite_credito,gasto_mensal,transacoes_mes,parcelamentos_ativos,rotulo_esperado
+43,16293.28,8424.82,14,1,perfil_gasto_consumo_alto
+18,8986.77,4036.59,5,3,perfil_gasto_consumo_moderado
+60,15451.63,5624.13,14,2,perfil_gasto_consumo_alto
+20,2156.74,1470.56,4,1,perfil_gasto_consumo_baixo
+36,11112.69,4546.68,6,3,perfil_gasto_consumo_moderado
+
+
