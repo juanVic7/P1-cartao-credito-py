@@ -109,7 +109,16 @@ class ClassificadorPerfis:
     print(f"\nArquivo salvo em: {caminho_saida}")
 
 def main() -> None:
-  pass
+  motor = ClassificadorPerfis()
+  caminho_treino = PASTA_DADOS / "dados_clusterizados_rotulados.csv"
+  dados_treino = motor.carregar_dados(caminho_treino)
+  motor.preparar_dados(dados_treino)
+  print ("--- INICIANDO TREINAMENTOS ---")
+  for ciclos in [50, 500, 5000]:
+     motor.executar_experimento(ciclos)
+  caminho_novos_clientes = PASTA_DADOS / "novos_clientes.csv"
+  novos_clientes = motor.carregar_dados(caminho_novos_clientes)
+  motor.prever_novos_casos(novos_clientes)
 
 if __name__ == "__main__":
     main()
