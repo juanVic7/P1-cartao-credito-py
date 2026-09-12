@@ -18,10 +18,7 @@ class ClassificadorPerfis:
 
 
   def carregar_dados(self, caminho_arquivo: str) -> pd.DataFrame:
-        # Tarefa: Fazer o pd.read_csv e retornar a tabela limpa
-        # o csv para ser lido está na pasta 02_dados_tratados, olhe as colunas desse arquivo
-        # Exemplo de leitura de dados no PDF 3, página 14
-        pass # ao terminar de fazer o método, apague esse "pass"
+    return pd.read_csv(caminho_arquivo)
     
   def preparar_dados(self, dados: pd.DataFrame) -> None:
 
