@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split 
 from sklearn.preprocessing import StandardScaler 
 from sklearn.neural_network import MLPClassifier  
-from sklearn.metrics import accuracy_score 
+from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt 
 
 
@@ -50,9 +50,20 @@ class ClassificadorPerfis:
     self.modelo = MLPClassifier(hidden_layer_sizes=(5,), max_iter=limite_iteracoes, random_state=42, verbose=True)
     self.modelo.fit(self.X_treino, self.y_treino)
     
-    predicao = self.modelo.predict(self.X_teste)
-    acuracia = accuracy_score(self.y_teste, predicao)
-    print(f"Resultado com {limite_iteracoes} épocas: {acuracia * 100:.2f}% de acerto")
+    predicao_teste = self.modelo.predict(self.X_teste)
+    acuracia_teste = accuracy_score(self.y_teste, predicao_teste)
+
+    predicao_treino = self.modelo.predict(self.X_treino)
+    acuracia_treino = accuracy_score(self.y_treino, predicao_treino)
+
+    print(f"\n--- Resultado com {limite_iteracoes} épocas ---")
+    print(f"Acurácia Treino: {acuracia_treino * 100:.2f}%")
+    print(f"Acurácia Teste:  {acuracia_teste * 100:.2f}%")
+
+    matriz = confusion_matrix(self.y_teste, predicao_teste)
+    print("\nMatriz de Confusão:")
+    print(matriz)
+    print("-" * 40)
 
     plt.clf() 
     plt.plot(self.modelo.loss_curve_) 
