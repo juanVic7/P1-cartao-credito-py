@@ -126,14 +126,10 @@ O K-Means é um algoritmo de **aprendizado não supervisionado**. Isso significa
 
 Seu objetivo é separar os dados em grupos internamente semelhantes, chamados de **clusters**.
 
-## 5.1 Carregamento e validação
+## 5.1 Carregamento
 
-A função `carregar_e_validar_dados()` lê o CSV utilizando `pandas` e verifica:
+A função `carregar_dados()` realiza a ingestão do arquivo CSV utilizando a biblioteca **pandas**. Ela estrutura os 8.000 registros na memória para que as colunas numéricas possam ser isoladas e repassadas para as etapas seguintes de pré-processamento e clusterização.
 
-- se todas as cinco colunas obrigatórias existem;
-- se há valores ausentes nas variáveis utilizadas.
-
-Caso alguma coluna esteja ausente ou existam valores nulos, o programa interrompe a execução para evitar o treinamento com dados inconsistentes.
 
 ---
 
@@ -356,6 +352,7 @@ Ela centraliza:
 - padronização;
 - criação e treinamento da MLP;
 - geração das curvas de perda;
+- cálculo das acurácias de treino, teste e Matriz de Confusão;
 - classificação dos novos casos.
 
 ---
@@ -508,6 +505,14 @@ O experimento C não é pior em resultado, mas é desnecessariamente mais permis
 
 ---
 
+## 7.4 Matriz de Confusão e Acurácia de Treino
+
+Para garantir que a rede não está apenas decorando os dados (overfitting), o código calcula simultaneamente a acurácia de treino e de teste. 
+
+Além disso, o sistema gera uma Matriz de Confusão sobre o lote de 1.600 clientes de teste. O modelo obteve precisão total em classes isoladas, com raríssimos erros de classificação (apenas 3 casos cruzados) concentrados exclusivamente nas fronteiras mais tênues entre os perfis de baixo e alto consumo, consolidando a confiabilidade do classificador.
+
+---
+
 # 8. Curvas de perda
 
 A MLP mantém o histórico da função de perda no atributo:
@@ -577,9 +582,6 @@ O modelo acertou os **5 de 5 casos apresentados**.
 
 ```text
 02_cartao_credito.csv
-        │
-        ▼
-Validação das 5 colunas
         │
         ▼
 Padronização dos atributos
@@ -672,7 +674,6 @@ python 03_codigo/01_kmeans.py
 Esse programa irá:
 
 - ler o CSV original;
-- validar as cinco variáveis;
 - padronizar os atributos;
 - testar `k = 2`, `3`, `4` e `5`;
 - calcular inércia e silhueta;
@@ -701,8 +702,10 @@ O programa irá:
 - ajustar o `StandardScaler` apenas no treino;
 - treinar a MLP com 50, 500 e 5000 iterações máximas;
 - mostrar o treinamento no terminal com `verbose=True`;
-- calcular a acurácia de teste;
+- calcular e exibir as acurácias de treino e teste;
+- exibir no terminal a Matriz de Confusão do modelo;
 - salvar as três curvas de perda;
+- retreinar o melhor modelo (500 épocas) de forma silenciosa para predição;
 - classificar os cinco novos clientes;
 - salvar `casos_de_teste.csv`.
 
@@ -846,6 +849,7 @@ O principal aprendizado do trabalho é compreender o fluxo completo entre **desc
 | Perda final | 0,013051 |
 | Acurácia de treino | 99,78% |
 | Acurácia de teste | 99,81% |
+| Matriz de Confusão | 3 erros em 1.600 registros |
 | Casos inéditos corretos | 5 de 5 |
 
 ---
