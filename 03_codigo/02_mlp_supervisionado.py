@@ -45,9 +45,9 @@ class ClassificadorPerfis:
       self.X_teste = self.scaler.transform(X_teste)
  
     
-  def executar_experimento(self, limite_iteracoes: int) -> None:
+  def executar_experimento(self, limite_iteracoes: int, mostrar_logs: bool = True) -> None:
     
-    self.modelo = MLPClassifier(hidden_layer_sizes=(5,), max_iter=limite_iteracoes, random_state=42, verbose=True)
+    self.modelo = MLPClassifier(hidden_layer_sizes=(5,), max_iter=limite_iteracoes, random_state=42, verbose=mostrar_logs)
     self.modelo.fit(self.X_treino, self.y_treino)
     
     predicao_teste = self.modelo.predict(self.X_teste)
@@ -124,6 +124,10 @@ def main() -> None:
   print ("--- INICIANDO TREINAMENTOS ---")
   for ciclos in [50, 500, 5000]:
      motor.executar_experimento(ciclos)
+
+  print("\n--- APLICANDO O MELHOR MODELO: 500 ÉPOCAS ---")
+  motor.executar_experimento(500, mostrar_logs=False)
+    
     
   caminho_novos_clientes = PASTA_DADOS / "novos_clientes.csv"
   novos_clientes = motor.carregar_dados(caminho_novos_clientes)
