@@ -7,8 +7,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt 
 
 
-PASTA_DADOS = Path("../02_dados_tratados")
-PASTA_RESULTADOS = Path("../04_resultados")
+PASTA_DADOS = Path("02_dados_tratados")
+PASTA_RESULTADOS = Path("04_resultados")
 
 class ClassificadorPerfis:
   def __init__(self) -> None:
