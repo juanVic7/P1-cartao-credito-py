@@ -854,4 +854,14 @@ O principal aprendizado do trabalho é compreender o fluxo completo entre **desc
 
 ---
 
+## Contribuidores
+
+| Nome | GitHub |
+|---|---|
+| Luis Felipe Dias de Souza | [@luf3ds](https://github.com/luf3ds) |
+| Matheus Enrico Araujo Santos | [@V0rtexs](https://github.com/V0rtexs) |
+| Rogerio Gomes Lacerda | [@rogeriomaci3l](https://github.com/rogeriomaci3l) |
+
+---
+
 **Projeto acadêmico — P1 do Grupo 02: Cartão de Crédito — K-Means e Rede Neural MLP.**
